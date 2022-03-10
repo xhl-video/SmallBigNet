@@ -46,11 +46,11 @@ class VideoRecord(object):
 
     @property
     def num_frames(self):
-        return int(self._data[2])
+        return int(self._data[1])
 
     @property
     def label(self):
-        return int(self._data[1])
+        return int(self._data[2])
 
 
 class Kinetics(data.Dataset):
@@ -127,7 +127,7 @@ class Kinetics(data.Dataset):
 
                     for i in range(self.num_clips):
                         data = x.strip().split(' ')[0]
-                        name = data.split('/')[-1].split('.')[0]
+                        name = data.split('/')[-1].split('.')[0][0:11]
                         path = self.root_path
                         if os.path.exists(os.path.join(path, name)):
                             self.video_list.append(VideoRecord([name, x.strip().split(' ')[1], int(x.strip(
@@ -138,8 +138,8 @@ class Kinetics(data.Dataset):
         elif self.phase == 'Val':
             for x in open(self.list_file):
                 data = x.strip().split(' ')[0]
-                name = data.split('/')[-1].split('.')[0]
-                name = os.path.join('val', name[0:11])
+                name = data.split('/')[-1].split('.')[0][0:11]
+               # name = os.path.join('val', name[0:11])
                 path = self.root_path
                 if os.path.exists(os.path.join(path, name)):
                     self.video_list.append(VideoRecord([name, x.strip().split(' ')[1], int(
@@ -150,9 +150,10 @@ class Kinetics(data.Dataset):
                 idx = 0
                 for i in range(self.num_clips):
                     data = x.strip().split(' ')[0]
-                    name = data.split('/')[-1].split('.')[0]
-                    name = os.path.join('train', name[0:11])
+                    name = data.split('/')[-1].split('.')[0][0:11]
+                    #name = os.path.join('train', name[0:11])
                     path = self.root_path
+                   # print(name)
                     if os.path.exists(os.path.join(path, name)):
                         self.video_list.append(VideoRecord([name, x.strip().split(' ')[1], int(
                             x.strip().split(' ')[2])], self.root_path, phase='Train'))

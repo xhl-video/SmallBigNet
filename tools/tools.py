@@ -265,14 +265,11 @@ def adjust_learning_rate2(optimizer, base_lr):
 
 def inflate_state_dict(pretrained_dict, model_dict):
     for k in pretrained_dict.keys():
-        if k in model_dict.keys():
+        if k in model_dict.keys() and 'fc' not in k:
             if pretrained_dict[k].size() != model_dict[k].size():
                 assert(
-                    pretrained_dict[k].size()[
-                        :2] == model_dict[k].size()[
-                        :2]), "To inflate, channel number should match."
-                assert(pretrained_dict[k].size()[-2:] == model_dict[k].size()
-                       [-2:]), "To inflate, spatial kernel size should match."
+                    pretrained_dict[k].size()[:2] == model_dict[k].size()[:2]), "To inflate, channel number should match."
+                assert(pretrained_dict[k].size()[-2:] == model_dict[k].size()[-2:]), "To inflate, spatial kernel size should match."
                 #print("Layer {} needs inflation.".format(k))
                 shape = list(pretrained_dict[k].shape)
                 shape.insert(2, 1)

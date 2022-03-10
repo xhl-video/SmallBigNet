@@ -92,15 +92,11 @@ class SmallBigNet(nn.Module):
         downsample = None
         if stride != 1 or self.inplanes != planes * block.expansion:
             downsample = nn.Sequential(
-                nn.AvgPool3d(
-                    (1, 3, 3),
-                    (1, stride, stride),
-                     padding=(0, 1, 1)),
                 nn.Conv3d(
                     self.inplanes,
                     planes * block.expansion,
                     kernel_size=1,
-                    stride=(1, 1, 1),
+                    stride=(1, stride, stride),
                     bias=False),
                 nn.BatchNorm3d(
                     planes * block.expansion),
